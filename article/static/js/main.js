@@ -47,7 +47,7 @@ new Vue({
        },
        getArticle: function(id) {
           this.loading = true;
-          axios.get('/api/article/${this.currentArticle.id}/')
+          axios.get('/api/article/' + id + '/')
               .then((response) => {
                   this.currentArticle = response.data;
                   this.loading = false;
@@ -71,7 +71,7 @@ new Vue({
        },
        updateArticle: function() {
           this.loading = true;
-          axios.put('/api/article/${this.currentArticle.id}/',
+          axios.put('/api/article/${currentArticle.id}/',
               this.currentArticle)
               .then((response) => {
                   this.loading = false;
@@ -85,7 +85,7 @@ new Vue({
        },
        deleteArticle: function(id) {
           this.loading = true;
-          axios.delete('/api/article/${id}/')
+          axios.delete('/api/article/' + id + '/')
               .then((response) => {
                   this.loading = false;
                   this.getArticles();
