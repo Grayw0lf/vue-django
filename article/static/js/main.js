@@ -18,7 +18,7 @@ var csrftoken = getCookie('csrftoken');
 new Vue({
    delimiters: ["${", "}"],
    el: '#starting',
-   headers: {"HTTP_X_XSRF_TOKEN": csrftoken},
+   headers: {"X-CSRFToken": csrftoken},
    data: {
        articles: [],
        loading: false,
@@ -59,7 +59,6 @@ new Vue({
        },
        addArticle: function() {
           this.loading = true;
-          var csrftoken = Cookies.get('csrftoken');
           axios.post('/api/article/',this.newArticle)
               .then((response) => {
                   this.loading = false;
