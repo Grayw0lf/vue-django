@@ -1,4 +1,6 @@
 <!DOCTYPE html>
+
+{% load staticfiles %}
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -22,95 +24,13 @@
             integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous">
     </script>
 
-    <!-- axios -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.18.0/axios.min.js"></script>
-
     <!-- vue js -->
     <script src="https://cdn.jsdelivr.net/npm/vue"></script>
 
-    <script type="text/javascript">
-        new Vue({
-           el: '#starting',
-           delimiters: ['${', '}'],
-           data: {
-               articles: [],
-               loading: false,
-               currentArticle: {},
-               message: null,
-               newArticle: {
-                   title: null,
-                   body: null,
-               }
-           },
-           mounted: function () {
-               this.getArticles();
-           },
-           methods: {
-               getArticles: function() {
-                   this.loading = true;
-                   axios.get('/api/article/')
-                       .then((response) => {
-                           this.articles = response.data;
-                           this.loading = false;
-                       })
-                       .catch((err) => {
-                           this.loading = false;
-                           console.log(err);
-                       })
-               },
-               getArticle: function(id) {
-                  this.loading = true;
-                  axios.get('/api/article/${id}/')
-                      .then((response) => {
-                          this.currentArticle = response.data;
-                          this.loading = false;
-                      })
-                      .catch((err) => {
-                          this.loading = false;
-                          console.log(err);
-                      })
-               },
-               addArticle: function() {
-                  this.loading = true;
-                  axios.post('/api/article/',this.newArticle)
-                      .then((response) => {
-                          this.loading = false;
-                          this.getArticles();
-                      })
-                      .catch((err) => {
-                          this.loading = false;
-                          console.log(err);
-                      })
-               },
-               updateArticle: function() {
-                  this.loading = true;
-                  axios.put('/api/article/${this.currentArticle.id}/',
-                      this.currentArticle)
-                      .then((response) => {
-                          this.loading = false;
-                          this.currentArticle = response.data;
-                          this.getArticles();
-                      })
-                      .catch((err) => {
-                          this.loading = false;
-                          console.log(err);
-                      })
-               },
-               deleteArticle: function(id) {
-                  this.loading = true;
-                  axios.delete('/api/article/${id}/')
-                      .then((response) => {
-                          this.loading = false;
-                          this.getArticles();
-                      })
-                      .catch((err) => {
-                          this.loading = false;
-                          console.log(err);
-                      })
-               }
-           }
-        });
+    <!-- axios -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.18.0/axios.min.js">
     </script>
+
 </head>
 <body>
     <div id="starting">
@@ -131,8 +51,8 @@
                     </thead>
                     <tbody>
                         <tr v-for="article in articles">
-                            <th scope="row">${ article.id }</th>
-                            <td>${ article.title }</td>
+                            <th scope="row" v-bind:class="[article.id]">${article.id}</th>
+                            <td>${article.title}</td>
                             <td>
                                 <button class="btn btn-info" data-toggle="modal"
                                         data-target="#editArticleModal"
@@ -218,7 +138,7 @@
                                         <input type="text" class="form-control"
                                                id="title"
                                                placeholder="Enter Article Heading"
-                                               v-model="currentArticle.article_heading"
+                                               v-model="currentArticle.title"
                                                required="required">
                                     </div>
                                     <div class="form-group">
@@ -249,5 +169,8 @@
         </div>
         <div class="loading" v-if="loading===true">Loading&#8230;</div>
     </div>
+
+<script src="{% static 'js/main.js' %}"></script>
+
 </body>
 </html>
