@@ -1,6 +1,24 @@
+function getCookie(name) {
+        var cookieValue = null;
+        if (document.cookie && document.cookie !== '') {
+            var cookies = document.cookie.split(';');
+            for (var i = 0; i < cookies.length; i++) {
+                var cookie = jQuery.trim(cookies[i]);
+
+                if (cookie.substring(0, name.length + 1) === (name + '=')) {
+                    cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                    break;
+                }
+            }
+        }
+        return cookieValue;
+    }
+var csrftoken = getCookie('csrftoken');
+
 new Vue({
    delimiters: ["${", "}"],
    el: '#starting',
+   headers: {"HTTP_X_XSRF_TOKEN": csrftoken},
    data: {
        articles: [],
        loading: false,
@@ -26,7 +44,6 @@ new Vue({
                    this.loading = false;
                    console.log(err);
                })
-           console.log(this.currentArticle);
        },
        getArticle: function(id) {
           this.loading = true;
@@ -42,9 +59,8 @@ new Vue({
        },
        addArticle: function() {
           this.loading = true;
-          axios.post('/api/article/',{
-              title: this.newArticle.title,
-              body: this.newArticle.body})
+          var csrftoken = Cookies.get('csrftoken');
+          axios.post('/api/article/',this.newArticle)
               .then((response) => {
                   this.loading = false;
                   this.getArticles();
