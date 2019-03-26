@@ -18,7 +18,6 @@ var csrftoken = getCookie('csrftoken');
 new Vue({
    delimiters: ["${", "}"],
    el: '#starting',
-   headers: {"X-CSRFToken": csrftoken},
    data: {
        articles: [],
        loading: false,
@@ -59,7 +58,8 @@ new Vue({
        },
        addArticle: function() {
           this.loading = true;
-          axios.post('/api/article/',this.newArticle)
+          axios.post('/api/article/',this.newArticle,
+              {headers: {"X-CSRFToken":csrftoken }})
               .then((response) => {
                   this.loading = false;
                   this.getArticles();
@@ -71,8 +71,9 @@ new Vue({
        },
        updateArticle: function() {
           this.loading = true;
-          axios.put('/api/article/${currentArticle.id}/',
-              this.currentArticle)
+          axios.put('/api/article/' + this.currentArticle.id + '/',
+              this.currentArticle,
+              {headers: {"X-CSRFToken":csrftoken }})
               .then((response) => {
                   this.loading = false;
                   this.currentArticle = response.data;
@@ -85,7 +86,8 @@ new Vue({
        },
        deleteArticle: function(id) {
           this.loading = true;
-          axios.delete('/api/article/' + id + '/')
+          axios.delete('/api/article/' + id + '/',
+              {headers: {"X-CSRFToken":csrftoken }})
               .then((response) => {
                   this.loading = false;
                   this.getArticles();
