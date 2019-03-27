@@ -1,0 +1,8 @@
+#viewArticleModal .modal-content {
+    padding-left: 10px;
+}
+
+.article-title {
+    text-decoration: underline;
+    cursor: pointer;
+}

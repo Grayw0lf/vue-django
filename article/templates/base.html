@@ -24,6 +24,9 @@
             integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous">
     </script>
 
+    <!-- main style -->
+    <link rel="stylesheet" href="{% static 'css/main.css' %}">
+
     <!-- vue js -->
     <script src="https://cdn.jsdelivr.net/npm/vue"></script>
 
@@ -51,8 +54,11 @@
                     </thead>
                     <tbody>
                         <tr v-for="article in articles">
-                            <th scope="row" v-bind:class="[article.id]">${article.id}</th>
-                            <td>${article.title}</td>
+                            <th scope="row">${article.id}</th>
+                            <td data-target="#viewArticleModal" data-toggle="modal"
+                                v-on:click="getArticle(article.id)" class="article-title">
+                                ${article.title}
+                            </td>
                             <td>
                                 <button class="btn btn-info" data-toggle="modal"
                                         data-target="#editArticleModal"
@@ -165,6 +171,36 @@
                     <div class="loading" v-if="loading===true">Loading&#8230;</div>
                 </div>
                 <!-- End of edit article modal -->
+                <!-- View Article Modal -->
+                <div class="modal fade" id="viewArticleModal" tabindex="-1"
+                     role="dialog" aria-labelledby="exampleModalLongTitle"
+                     aria-hidden="true">
+                    <div class="modal-dialog" role="document">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title" id="exampleModalLongTitle">
+                                    View ARTICLE
+                                </h5>
+                                <button type="button" class="close" data-dismiss="modal"
+                                        aria-label="Close">
+                                    <span aria-hidden="true">&times;</span>
+                                </button>
+                            </div>
+                            <div class="content">
+                                <h2>${currentArticle.title}</h2>
+                                <div class="body">${currentArticle.body}</div>
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-secondary m-progress"
+                                        data-dismiss="modal">
+                                    Close
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="loading" v-if="loading===true">Loading&#8230;</div>
+                </div>
+                <!-- End of view article modal -->
             </div>
         </div>
         <div class="loading" v-if="loading===true">Loading&#8230;</div>
